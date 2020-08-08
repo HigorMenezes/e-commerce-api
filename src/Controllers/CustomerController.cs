@@ -26,7 +26,7 @@ namespace e_commerce_api.src.Controllers
             return Ok(customers);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "FindById")]
         public async Task<ActionResult<CustomerResponseDTO>> FindById(long id)
         {
             var customers = await _service.FindById(id);
@@ -37,6 +37,14 @@ namespace e_commerce_api.src.Controllers
             }
 
             return Ok(customers);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<CustomerResponseDTO>> Create(CustomerRequestDTO customer)
+        {
+            var customerCreated = await _service.Create(customer);
+
+            return CreatedAtAction(nameof(FindById), new { id = customerCreated.Id }, customerCreated);
         }
     }
 }

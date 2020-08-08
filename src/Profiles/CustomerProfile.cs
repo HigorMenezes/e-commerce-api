@@ -9,6 +9,7 @@ namespace e_commerce_api.src.Profiles
         public CustomerProfile()
         {
             CreateMap<CustomerModel, CustomerResponseDTO>();
+            CreateMap<CustomerRequestDTO, CustomerModel>();
         }
 
     }

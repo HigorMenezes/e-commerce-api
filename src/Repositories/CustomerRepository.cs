@@ -16,21 +16,28 @@ namespace e_commerce_api.src.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<CustomerModel>> FindAll()
+        public CustomerModel Create(CustomerModel customer)
+        {
+            _context.Customer.Add(customer);
+
+            return customer;
+        }
+
+        public async Task<IEnumerable<CustomerModel>> FindAllAsync()
         {
             var customers = await _context.Customer.ToListAsync();
 
             return customers;
         }
 
-        public async Task<CustomerModel> FindById(long id)
+        public async Task<CustomerModel> FindByIdAsync(long id)
         {
             var customer = await _context.Customer.FindAsync(id);
 
             return customer;
         }
 
-        public async Task<bool> SaveChanges()
+        public async Task<bool> SaveChangesAsync()
         {
             var saved = await _context.SaveChangesAsync();
 

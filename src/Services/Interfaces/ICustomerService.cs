@@ -8,5 +8,6 @@ namespace e_commerce_api.src.Services
     {
         Task<IEnumerable<CustomerResponseDTO>> FindAll();
         Task<CustomerResponseDTO> FindById(long id);
+        Task<CustomerResponseDTO> Create(CustomerRequestDTO customer);
     }
 }
