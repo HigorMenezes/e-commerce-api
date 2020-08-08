@@ -65,5 +65,21 @@ namespace e_commerce_api.src.Services
 
             return _mapper.Map<CustomerResponseDTO>(updatedCustomer);
         }
+
+        public async Task<CustomerResponseDTO> DeleteAsync(long id)
+        {
+            var customerToDelete = await _repository.FindByIdAsync(id);
+
+            if (customerToDelete == null)
+            {
+                throw new CustomerNotFoundException(String.Format("Customer with the id '{0}' was not found", id));
+            }
+
+            var deletedCustomer = _repository.Delete(customerToDelete);
+
+            await _repository.SaveChangesAsync();
+
+            return _mapper.Map<CustomerResponseDTO>(deletedCustomer);
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace e_commerce_api.src.Services
         Task<CustomerResponseDTO> FindByIdAsync(long id);
         Task<CustomerResponseDTO> CreateAsync(CustomerRequestDTO customer);
         Task<CustomerResponseDTO> UpdateAsync(long id, CustomerRequestDTO customer);
+        Task<CustomerResponseDTO> DeleteAsync(long id);
     }
 }

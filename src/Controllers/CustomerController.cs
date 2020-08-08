@@ -93,5 +93,24 @@ namespace e_commerce_api.src.Controllers
 
             return updatedCustomer;
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<CustomerResponseDTO>> Delete(long id)
+        {
+            try
+            {
+                await _service.DeleteAsync(id);
+            }
+            catch (CustomerNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return NoContent();
+        }
     }
 }

@@ -46,7 +46,14 @@ namespace e_commerce_api.src.Repositories
 
         public CustomerModel Update(CustomerModel customer)
         {
-            var currentCustomer = _context.Customer.Update(customer);
+            _context.Customer.Update(customer);
+
+            return customer;
+        }
+
+        public CustomerModel Delete(CustomerModel customer)
+        {
+            _context.Customer.Remove(customer);
 
             return customer;
         }
