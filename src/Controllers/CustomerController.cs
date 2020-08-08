@@ -1,12 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using e_commerce_api.src.DTOs;
+using e_commerce_api.src.Exceptions.CustomerExceptions;
 using e_commerce_api.src.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace e_commerce_api.src.Controllers
 {
-
     [Route("v1/customers")]
     [ApiController]
     public class CustomerController : ControllerBase
@@ -21,7 +22,16 @@ namespace e_commerce_api.src.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustomerResponseDTO>>> FindAll()
         {
-            var customers = await _service.FindAllAsync();
+            IEnumerable<CustomerResponseDTO> customers;
+
+            try
+            {
+                customers = await _service.FindAllAsync();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
 
             return Ok(customers);
         }
@@ -29,30 +39,59 @@ namespace e_commerce_api.src.Controllers
         [HttpGet("{id}", Name = "FindById")]
         public async Task<ActionResult<CustomerResponseDTO>> FindById(long id)
         {
-            var customers = await _service.FindByIdAsync(id);
+            CustomerResponseDTO customer;
 
-            if (customers == null)
+            try
+            {
+                customer = await _service.FindByIdAsync(id);
+            }
+            catch (CustomerNotFoundException)
             {
                 return NotFound();
             }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
 
-            return Ok(customers);
+            return Ok(customer);
         }
 
         [HttpPost]
         public async Task<ActionResult<CustomerResponseDTO>> Create(CustomerRequestDTO customer)
         {
-            var customerCreated = await _service.CreateAsync(customer);
+            CustomerResponseDTO createdCustomer;
 
-            return CreatedAtAction(nameof(FindById), new { id = customerCreated.Id }, customerCreated);
+            try
+            {
+                createdCustomer = await _service.CreateAsync(customer);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return CreatedAtAction(nameof(FindById), new { id = createdCustomer.Id }, createdCustomer);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<CustomerResponseDTO>> Update(long id, CustomerRequestDTO customer)
         {
-            var newCustomer = await _service.UpdateAsync(id, customer);
+            CustomerResponseDTO updatedCustomer;
+            try
+            {
+                updatedCustomer = await _service.UpdateAsync(id, customer);
+            }
+            catch (CustomerNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
 
-            return newCustomer;
+            return updatedCustomer;
         }
     }
 }

@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using e_commerce_api.src.DTOs;
+using e_commerce_api.src.Exceptions.CustomerExceptions;
 using e_commerce_api.src.Models;
 using e_commerce_api.src.Repositories;
 
@@ -21,11 +23,11 @@ namespace e_commerce_api.src.Services
         public async Task<CustomerResponseDTO> CreateAsync(CustomerRequestDTO customer)
         {
             var customerModel = _mapper.Map<CustomerModel>(customer);
-            var customerCreated = _repository.Create(customerModel);
+            var createdCustomer = _repository.Create(customerModel);
 
             await _repository.SaveChangesAsync();
 
-            return _mapper.Map<CustomerResponseDTO>(customerCreated);
+            return _mapper.Map<CustomerResponseDTO>(createdCustomer);
         }
 
         public async Task<IEnumerable<CustomerResponseDTO>> FindAllAsync()
@@ -39,6 +41,11 @@ namespace e_commerce_api.src.Services
         {
             var customer = await _repository.FindByIdAsync(id);
 
+            if (customer == null)
+            {
+                throw new CustomerNotFoundException(String.Format("Customer with the id '{0}' was not found", id));
+            }
+
             return _mapper.Map<CustomerResponseDTO>(customer);
         }
 
@@ -46,12 +53,17 @@ namespace e_commerce_api.src.Services
         {
             var currentCustomer = await _repository.FindByIdAsync(id);
 
+            if (currentCustomer == null)
+            {
+                throw new CustomerNotFoundException(String.Format("Customer with the id '{0}' was not found", id));
+            }
+
             _mapper.Map(customer, currentCustomer);
-            var newCustomer = _repository.Update(currentCustomer);
+            var updatedCustomer = _repository.Update(currentCustomer);
 
             await _repository.SaveChangesAsync();
 
-            return _mapper.Map<CustomerResponseDTO>(newCustomer);
+            return _mapper.Map<CustomerResponseDTO>(updatedCustomer);
         }
     }
 }
