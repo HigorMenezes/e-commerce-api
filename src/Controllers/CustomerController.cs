@@ -21,7 +21,7 @@ namespace e_commerce_api.src.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustomerResponseDTO>>> FindAll()
         {
-            var customers = await _service.FindAll();
+            var customers = await _service.FindAllAsync();
 
             return Ok(customers);
         }
@@ -29,7 +29,7 @@ namespace e_commerce_api.src.Controllers
         [HttpGet("{id}", Name = "FindById")]
         public async Task<ActionResult<CustomerResponseDTO>> FindById(long id)
         {
-            var customers = await _service.FindById(id);
+            var customers = await _service.FindByIdAsync(id);
 
             if (customers == null)
             {
@@ -42,9 +42,17 @@ namespace e_commerce_api.src.Controllers
         [HttpPost]
         public async Task<ActionResult<CustomerResponseDTO>> Create(CustomerRequestDTO customer)
         {
-            var customerCreated = await _service.Create(customer);
+            var customerCreated = await _service.CreateAsync(customer);
 
             return CreatedAtAction(nameof(FindById), new { id = customerCreated.Id }, customerCreated);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<CustomerResponseDTO>> Update(long id, CustomerRequestDTO customer)
+        {
+            var newCustomer = await _service.UpdateAsync(id, customer);
+
+            return newCustomer;
         }
     }
 }

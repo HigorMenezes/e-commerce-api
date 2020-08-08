@@ -18,7 +18,7 @@ namespace e_commerce_api.src.Services
             _mapper = mapper;
         }
 
-        public async Task<CustomerResponseDTO> Create(CustomerRequestDTO customer)
+        public async Task<CustomerResponseDTO> CreateAsync(CustomerRequestDTO customer)
         {
             var customerModel = _mapper.Map<CustomerModel>(customer);
             var customerCreated = _repository.Create(customerModel);
@@ -28,19 +28,30 @@ namespace e_commerce_api.src.Services
             return _mapper.Map<CustomerResponseDTO>(customerCreated);
         }
 
-        public async Task<IEnumerable<CustomerResponseDTO>> FindAll()
+        public async Task<IEnumerable<CustomerResponseDTO>> FindAllAsync()
         {
             var customers = await _repository.FindAllAsync();
 
             return _mapper.Map<IEnumerable<CustomerResponseDTO>>(customers);
         }
 
-        public async Task<CustomerResponseDTO> FindById(long id)
+        public async Task<CustomerResponseDTO> FindByIdAsync(long id)
         {
             var customer = await _repository.FindByIdAsync(id);
 
             return _mapper.Map<CustomerResponseDTO>(customer);
         }
 
+        public async Task<CustomerResponseDTO> UpdateAsync(long id, CustomerRequestDTO customer)
+        {
+            var currentCustomer = await _repository.FindByIdAsync(id);
+
+            _mapper.Map(customer, currentCustomer);
+            var newCustomer = _repository.Update(currentCustomer);
+
+            await _repository.SaveChangesAsync();
+
+            return _mapper.Map<CustomerResponseDTO>(newCustomer);
+        }
     }
 }

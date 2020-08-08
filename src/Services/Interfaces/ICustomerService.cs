@@ -6,8 +6,9 @@ namespace e_commerce_api.src.Services
 {
     public interface ICustomerService
     {
-        Task<IEnumerable<CustomerResponseDTO>> FindAll();
-        Task<CustomerResponseDTO> FindById(long id);
-        Task<CustomerResponseDTO> Create(CustomerRequestDTO customer);
+        Task<IEnumerable<CustomerResponseDTO>> FindAllAsync();
+        Task<CustomerResponseDTO> FindByIdAsync(long id);
+        Task<CustomerResponseDTO> CreateAsync(CustomerRequestDTO customer);
+        Task<CustomerResponseDTO> UpdateAsync(long id, CustomerRequestDTO customer);
     }
 }
