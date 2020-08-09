@@ -5,6 +5,7 @@ using e_commerce_api.src.DTOs.CustomerDTOs;
 using e_commerce_api.src.Exceptions.CustomerExceptions;
 using e_commerce_api.src.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace e_commerce_api.src.Controllers
 {
@@ -13,10 +14,12 @@ namespace e_commerce_api.src.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _service;
+        private readonly ILogger<CustomerController> _logger;
 
-        public CustomerController(ICustomerService service)
+        public CustomerController(ICustomerService service, ILogger<CustomerController> logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -28,8 +31,9 @@ namespace e_commerce_api.src.Controllers
             {
                 customers = await _service.FindAllAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 return StatusCode(500);
             }
 
@@ -49,8 +53,9 @@ namespace e_commerce_api.src.Controllers
             {
                 return NotFound();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 return StatusCode(500);
             }
 
@@ -86,8 +91,9 @@ namespace e_commerce_api.src.Controllers
             {
                 return NotFound();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 return StatusCode(500);
             }
 
@@ -105,8 +111,9 @@ namespace e_commerce_api.src.Controllers
             {
                 return NotFound();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 return StatusCode(500);
             }
 

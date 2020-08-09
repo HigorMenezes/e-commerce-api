@@ -33,8 +33,9 @@ namespace e_commerce_api.src.Controllers
             {
                 products = await _service.FindAllAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 return StatusCode(500);
             }
 
@@ -54,8 +55,9 @@ namespace e_commerce_api.src.Controllers
             {
                 return NotFound();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 return StatusCode(500);
             }
 
@@ -71,8 +73,9 @@ namespace e_commerce_api.src.Controllers
             {
                 createdProduct = await _service.CreateAsync(product);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 return StatusCode(500);
             }
 
@@ -112,8 +115,9 @@ namespace e_commerce_api.src.Controllers
             {
                 return NotFound();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 return StatusCode(500);
             }
 
