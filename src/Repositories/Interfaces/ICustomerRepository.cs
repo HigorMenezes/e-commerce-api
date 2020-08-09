@@ -10,7 +10,7 @@ namespace e_commerce_api.src.Repositories
         CustomerModel Create(CustomerModel customer);
         Task<IEnumerable<CustomerModel>> FindAllAsync();
         Task<CustomerModel> FindByIdAsync(long id);
-        CustomerModel Update(CustomerModel customer);
+        CustomerModel FullUpdate(CustomerModel customer);
         CustomerModel Delete(CustomerModel customer);
     }
 }

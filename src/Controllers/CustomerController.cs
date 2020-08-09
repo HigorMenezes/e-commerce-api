@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using e_commerce_api.src.DTOs;
+using e_commerce_api.src.DTOs.CustomerDTOs;
 using e_commerce_api.src.Exceptions.CustomerExceptions;
 using e_commerce_api.src.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,7 @@ namespace e_commerce_api.src.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CustomerResponseDTO>>> FindAll()
+        public async Task<ActionResult<IEnumerable<CustomerResponseDTO>>> FindAllAsync()
         {
             IEnumerable<CustomerResponseDTO> customers;
 
@@ -36,8 +36,8 @@ namespace e_commerce_api.src.Controllers
             return Ok(customers);
         }
 
-        [HttpGet("{id}", Name = "FindById")]
-        public async Task<ActionResult<CustomerResponseDTO>> FindById(long id)
+        [HttpGet("{id}", Name = "FindCustomerById")]
+        public async Task<ActionResult<CustomerResponseDTO>> FindByIdAsync(long id)
         {
             CustomerResponseDTO customer;
 
@@ -58,7 +58,7 @@ namespace e_commerce_api.src.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CustomerResponseDTO>> Create(CustomerRequestDTO customer)
+        public async Task<ActionResult<CustomerResponseDTO>> CreateAsync(CustomerRequestDTO customer)
         {
             CustomerResponseDTO createdCustomer;
 
@@ -71,16 +71,16 @@ namespace e_commerce_api.src.Controllers
                 return StatusCode(500);
             }
 
-            return CreatedAtAction(nameof(FindById), new { id = createdCustomer.Id }, createdCustomer);
+            return CreatedAtRoute("FindCustomerById", new { id = createdCustomer.Id }, createdCustomer);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<CustomerResponseDTO>> Update(long id, CustomerRequestDTO customer)
+        public async Task<ActionResult<CustomerResponseDTO>> FullUpdateAsync(long id, CustomerRequestDTO customer)
         {
             CustomerResponseDTO updatedCustomer;
             try
             {
-                updatedCustomer = await _service.UpdateAsync(id, customer);
+                updatedCustomer = await _service.FullUpdateAsync(id, customer);
             }
             catch (CustomerNotFoundException)
             {
@@ -91,11 +91,11 @@ namespace e_commerce_api.src.Controllers
                 return StatusCode(500);
             }
 
-            return updatedCustomer;
+            return Ok(updatedCustomer);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<CustomerResponseDTO>> Delete(long id)
+        public async Task<ActionResult> DeleteAsync(long id)
         {
             try
             {

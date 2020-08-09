@@ -44,7 +44,7 @@ namespace e_commerce_api.src.Repositories
             return saved >= 0;
         }
 
-        public CustomerModel Update(CustomerModel customer)
+        public CustomerModel FullUpdate(CustomerModel customer)
         {
             _context.Customer.Update(customer);
 

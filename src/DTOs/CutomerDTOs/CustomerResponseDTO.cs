@@ -1,4 +1,4 @@
-namespace e_commerce_api.src.DTOs
+namespace e_commerce_api.src.DTOs.CustomerDTOs
 {
     public class CustomerResponseDTO
     {

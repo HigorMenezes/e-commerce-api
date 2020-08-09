@@ -9,6 +9,7 @@ namespace e_commerce_api.src.Extensions
         public static IServiceCollection AddECommercyRepositories(this IServiceCollection services)
         {
             services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             return services;
         }
@@ -16,6 +17,7 @@ namespace e_commerce_api.src.Extensions
         public static IServiceCollection AddECommercyServices(this IServiceCollection services)
         {
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IProductService, ProductService>();
 
             return services;
         }
