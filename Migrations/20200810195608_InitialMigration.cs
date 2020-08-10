@@ -40,8 +40,8 @@ namespace e_commerce_api.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CustomerId = table.Column<long>(nullable: true),
-                    ProductId = table.Column<long>(nullable: true),
+                    CustomerId = table.Column<long>(nullable: false),
+                    ProductId = table.Column<long>(nullable: false),
                     ProductQuantity = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
@@ -52,13 +52,13 @@ namespace e_commerce_api.Migrations
                         column: x => x.CustomerId,
                         principalTable: "Customer",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cart_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

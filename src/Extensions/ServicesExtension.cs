@@ -10,6 +10,7 @@ namespace e_commerce_api.src.Extensions
         {
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICartRepository, CartRepository>();
 
             return services;
         }
@@ -18,6 +19,7 @@ namespace e_commerce_api.src.Extensions
         {
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICartService, CartService>();
 
             return services;
         }

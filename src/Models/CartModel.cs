@@ -7,8 +7,10 @@ namespace e_commerce_api.src.Models
         [Key]
         public long Id { get; set; }
 
+        [Required]
         public CustomerModel Customer { get; set; }
 
+        [Required]
         public ProductModel Product { get; set; }
 
         [Required]

@@ -73,8 +73,10 @@ namespace e_commerce_api.src.Controllers
             {
                 createdCustomer = await _service.CreateAsync(customer);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e.Message);
+                _logger.LogError(e.StackTrace);
                 return StatusCode(500);
             }
 
