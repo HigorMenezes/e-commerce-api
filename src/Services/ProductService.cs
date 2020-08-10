@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AutoMapper;
 using e_commerce_api.src.DTOs.ProductDTOs;
 using e_commerce_api.src.Exceptions.ProductExceptions;
 using e_commerce_api.src.Models;
 using e_commerce_api.src.Repositories;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace e_commerce_api.src.Services
 {
@@ -79,6 +81,22 @@ namespace e_commerce_api.src.Services
             await _repository.SaveChangesAsync();
 
             return _mapper.Map<ProductResponseDTO>(updatedProduct);
+        }
+
+        public async Task<ProductResponseDTO> PartialUpdateAsync(long id, ProductUpdateRequestDTO product)
+        {
+            var currentProduct = await _repository.FindByIdAsync(id);
+
+            if (currentProduct == null)
+            {
+                throw new ProductNotFoundException(String.Format("Product with the id '{0}' was not found", id));
+            }
+
+            _mapper.Map(product, currentProduct);
+
+            await _repository.SaveChangesAsync();
+
+            return _mapper.Map<ProductResponseDTO>(currentProduct);
         }
     }
 }

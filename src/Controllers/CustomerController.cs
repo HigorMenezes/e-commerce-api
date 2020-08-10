@@ -34,6 +34,7 @@ namespace e_commerce_api.src.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
+                _logger.LogError(e.StackTrace);
                 return StatusCode(500);
             }
 
@@ -56,6 +57,7 @@ namespace e_commerce_api.src.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
+                _logger.LogError(e.StackTrace);
                 return StatusCode(500);
             }
 
@@ -94,6 +96,7 @@ namespace e_commerce_api.src.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
+                _logger.LogError(e.StackTrace);
                 return StatusCode(500);
             }
 
@@ -114,6 +117,7 @@ namespace e_commerce_api.src.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
+                _logger.LogError(e.StackTrace);
                 return StatusCode(500);
             }
 

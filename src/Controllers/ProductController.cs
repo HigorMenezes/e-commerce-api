@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using e_commerce_api.src.DTOs.ProductDTOs;
 using e_commerce_api.src.Exceptions.ProductExceptions;
 using e_commerce_api.src.Services;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -36,6 +37,7 @@ namespace e_commerce_api.src.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
+                _logger.LogError(e.StackTrace);
                 return StatusCode(500);
             }
 
@@ -58,6 +60,7 @@ namespace e_commerce_api.src.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
+                _logger.LogError(e.StackTrace);
                 return StatusCode(500);
             }
 
@@ -76,6 +79,7 @@ namespace e_commerce_api.src.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
+                _logger.LogError(e.StackTrace);
                 return StatusCode(500);
             }
 
@@ -98,6 +102,41 @@ namespace e_commerce_api.src.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
+                _logger.LogError(e.StackTrace);
+                return StatusCode(500);
+            }
+
+            return Ok(updatedProduct);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<ProductResponseDTO>> PartialUpdateAsync(long id, JsonPatchDocument<ProductUpdateRequestDTO> productDoc)
+        {
+            ProductResponseDTO updatedProduct;
+
+            try
+            {
+                var product = new ProductUpdateRequestDTO();
+                productDoc.ApplyTo(product, ModelState);
+
+                TryValidateModel(product);
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+
+                updatedProduct = await _service.PartialUpdateAsync(id, product);
+            }
+            catch (ProductNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                _logger.LogError(e.StackTrace);
                 return StatusCode(500);
             }
 
@@ -118,6 +157,7 @@ namespace e_commerce_api.src.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
+                _logger.LogError(e.StackTrace);
                 return StatusCode(500);
             }
 

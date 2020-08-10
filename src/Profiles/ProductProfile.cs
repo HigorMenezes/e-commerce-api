@@ -10,6 +10,9 @@ namespace e_commerce_api.src.Profiles
         {
             CreateMap<ProductModel, ProductResponseDTO>();
             CreateMap<ProductRequestDTO, ProductModel>();
+            CreateMap<ProductUpdateRequestDTO, ProductModel>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+            CreateMap<ProductModel, ProductUpdateRequestDTO>();
         }
     }
 }
